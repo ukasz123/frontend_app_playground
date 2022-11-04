@@ -13,7 +13,7 @@ class App extends StatelessWidget {
     return Container(
       [
         const Image(
-          '/assets/logo.svg',
+          'assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
             keyframes: [
