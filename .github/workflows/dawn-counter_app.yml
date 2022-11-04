@@ -1,0 +1,70 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'counter_app_dawn/**'
+  pull_request:
+    branches: [ "main" ]
+
+defaults:
+  run:
+    working-directory: ./counter_app_dawn
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      
+      - name: Install webdev
+        run: dart pub global activate webdev
+
+      - name: Install dependencies
+        run: dart pub get
+
+      # Uncomment this step to verify the use of 'dart format' on each commit.
+      # - name: Verify formatting
+      #   run: dart format --output=none --set-exit-if-changed .
+
+      # Your project will need to have tests in test/ and a dependency on
+      # package:test for this step to succeed. Note that Flutter projects will
+      # want to change this to 'flutter test'.
+      - name: Run tests
+        run: dart test
+        
+      - name: Build app
+        run: webdev build
+      
+      - name: Copy to the destination
+        run: |
+          mkdir -p ./website/counter_app/dawn
+          cp -R ./build/ ./website/counter_app/dawn
+          rm -d ./build
+          
+      - name: Init new repo in dist folder and commit generated files
+        run: |
+          git add -A
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m 'deploy counter_app_dawn'
+      
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          # Token for the repo
+          # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
