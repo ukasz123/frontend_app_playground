@@ -54,7 +54,8 @@ jobs:
         run: |
           mkdir -p ./website/counter_app/dawn
           cp -R ./build/ ./website/counter_app/dawn
-          rm -d -f ./build
+          rm -rf ./build
+          rmdir ./build
           
       - name: Init new repo in dist folder and commit generated files
         run: |
