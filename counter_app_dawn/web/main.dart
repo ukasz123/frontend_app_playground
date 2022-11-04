@@ -1,3 +1,4 @@
+import 'package:counter_dawn/bulma/src/utils/bulma_div.dart';
 import 'package:dawn/dawn.dart';
 
 import 'package:counter_dawn/bulma/bulma.dart';
@@ -99,7 +100,8 @@ class _CounterWidgetState extends State<CounterWidget> {
               });
             },
             style: 'is-warning'),
-        Text('$counter'),
+        BulmaDivWidget.just(
+            child: Text('$counter'), cssClass: 'is-align-self-center'),
         Button(
             child: const Text('Increease'),
             onTap: () {
