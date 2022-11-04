@@ -50,14 +50,11 @@ jobs:
         
       - name: Build app
         run: webdev build
-      
-      - name: Copy to the destination
-        run: |
-          mkdir -p ./website/counter_app/dawn
-          cp -R ./build/ ./website/counter_app/dawn
-          rm -rf ./build
-          
+              
       - name: Deploy website 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ./website # The folder the action should deploy.
+          folder: build # The folder the action should deploy.
+          force: false
+          target-folder: website/counter_app/dawn
+          
