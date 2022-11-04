@@ -9,6 +9,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
+      - '.github/workflows/dawn-counter_app.yml'
       - 'counter_app_dawn/**'
   pull_request:
     branches: [ "main" ]
@@ -53,7 +54,7 @@ jobs:
         run: |
           mkdir -p ./website/counter_app/dawn
           cp -R ./build/ ./website/counter_app/dawn
-          rm -d ./build
+          rm -d -f ./build
           
       - name: Init new repo in dist folder and commit generated files
         run: |
