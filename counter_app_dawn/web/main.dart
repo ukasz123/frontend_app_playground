@@ -1,5 +1,7 @@
 import 'package:dawn/dawn.dart';
 
+import 'package:counter_dawn/bulma/bulma.dart';
+
 void main() => runApp(const App());
 
 class App extends StatelessWidget {
@@ -7,9 +9,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return const Container(
+    return Container(
       [
-        Image(
+        const Image(
           '/assets/logo.svg',
           style: Style({'width': '128px', 'height': '128px'}),
           animation: Animation(
@@ -29,7 +31,7 @@ class App extends StatelessWidget {
             iterations: double.infinity,
           ),
         ),
-        Text(
+        const Text(
           'Welcome to Dawn',
           style: Style({
             'font-size': '24px',
@@ -37,7 +39,7 @@ class App extends StatelessWidget {
             'color': '#00e690',
           }),
         ),
-        Container([
+        const Container([
           Text('To get started, edit '),
           Text(
             'web/main.dart',
@@ -50,8 +52,9 @@ class App extends StatelessWidget {
           ),
           Text(' and save to reload.'),
         ]),
+        CounterWidget(),
       ],
-      style: Style({
+      style: const Style({
         'display': 'flex',
         'flex-flow': 'column',
         'justify-content': 'center',
@@ -66,6 +69,47 @@ class App extends StatelessWidget {
         'font-family': '"Jost", system-ui',
         'user-select': 'none',
       }),
+    );
+  }
+}
+
+class CounterWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _CounterWidgetState();
+}
+
+class _CounterWidgetState extends State<CounterWidget> {
+  late int counter;
+  @override
+  void initialize() {
+    super.initialize();
+    counter = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Button(
+            child: const Text('Decrease'),
+            onTap: () {
+              print('Hey! You\'ve tapped the button!');
+              setState(() {
+                counter--;
+              });
+            },
+            style: 'is-warning'),
+        Text('$counter'),
+        Button(
+            child: const Text('Increease'),
+            onTap: () {
+              print('Hey! You\'ve tapped the other button!');
+              setState(() {
+                counter++;
+              });
+            },
+            style: 'is-success'),
+      ],
     );
   }
 }
