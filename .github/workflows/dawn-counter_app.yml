@@ -54,7 +54,7 @@ jobs:
       - name: Deploy website 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build # The folder the action should deploy.
+          folder: ./counter_app_dawn/build # The folder the action should deploy.
           force: false
           target-folder: website/counter_app/dawn
           
