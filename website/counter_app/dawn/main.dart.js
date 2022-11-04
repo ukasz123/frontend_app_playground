@@ -3453,7 +3453,7 @@ this.R()
 this.m("error",null,t.b4)
 s=this.f
 r=J.cc(s)
-r.sbp(s,"/assets/logo.svg")
+r.sbp(s,"assets/logo.svg")
 r.sc0(s,"")}}
 A.Y.prototype={}
 A.B.prototype={
