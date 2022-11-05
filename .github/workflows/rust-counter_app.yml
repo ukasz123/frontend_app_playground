@@ -34,7 +34,7 @@ jobs:
           cargo install wasm-bindgen-cli
         
       - name: Build app
-        run: trunk build --release
+        run: trunk build --release --public-url /website/counter_app/rust/
               
       - name: Deploy website 🚀
         uses: JamesIves/github-pages-deploy-action@v4
