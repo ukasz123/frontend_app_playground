@@ -1,0 +1,45 @@
+name: Rust Counter app
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/rust-counter_app.yml'
+      - 'counter_app_yew/**'
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: ./counter_app_yew
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install WebAssembly toolchain
+        run: rustup target add wasm32-unknown-unknown
+      
+      - name: Install Trunk
+        run: |
+          cargo install --locked trunk
+          cargo install wasm-bindgen-cli
+        
+      - name: Build app
+        run: trunk build --release
+              
+      - name: Deploy website 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./counter_app_yew/dist # The folder the action should deploy.
+          force: false
+          target-folder: website/counter_app/rust
+          
