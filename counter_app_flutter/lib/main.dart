@@ -24,30 +24,21 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const CounterPage(title: 'Flutter Counter app'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+class CounterPage extends StatefulWidget {
+  const CounterPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<CounterPage> createState() => _CounterPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _CounterPageState extends State<CounterPage> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -60,6 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
+
+  void _decrementCounter() => setState(() {
+        _counter--;
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -79,37 +74,60 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            Image.network(
+                'https://storage.googleapis.com/cms-storage-bucket/c823e53b3a1a7b0d36a9.png'),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Welcome to Flutter',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 8.0),
+            const Text.rich(
+              TextSpan(text: 'To get started, edit ', children: [
+                TextSpan(
+                  text: 'lib/main.dart',
+                  style: TextStyle(
+                    backgroundColor: Colors.black38,
+                    color: Colors.white70,
+                    height: 1.1,
+                  ),
+                ),
+                TextSpan(text: ' and save to reload'),
+              ]),
+            ),
+            const Divider(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: _decrementCounter,
+                  child: const Text('Decrease'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.amberAccent.shade200,
+                    foregroundColor: Colors.black,
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+                const SizedBox(width: 8.0),
+                ElevatedButton(
+                  onPressed: _incrementCounter,
+                  child: const Text('Increase'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.greenAccent.shade200,
+                    foregroundColor: Colors.black,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
