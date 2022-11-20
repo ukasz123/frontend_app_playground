@@ -1,0 +1,55 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter Game of Hex Life
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/flutter-hex_game_of_life.yml'
+      - 'hexagon/game_of_life/flutter/**'
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: ./hexagon/game_of_life/flutter
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Uncomment this step to verify the use of 'dart format' on each commit.
+      # - name: Verify formatting
+      #   run: dart format --output=none --set-exit-if-changed .
+
+      # Your project will need to have tests in test/ and a dependency on
+      # package:test for this step to succeed. Note that Flutter projects will
+      # want to change this to 'flutter test'.
+      # - name: Run tests
+      #   run: dart test
+        
+      - name: Build app
+        run: flutter build web --base-href /frontend_app_playground/website/hexagon/game_of_life/flutter/
+              
+      - name: Deploy website 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./hexagon/game_of_life/flutter/build/web # The folder the action should deploy.
+          force: false
+          target-folder: website/hexagon/game_of_life/flutter
+          
