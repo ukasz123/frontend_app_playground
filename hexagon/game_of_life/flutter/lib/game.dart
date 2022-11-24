@@ -50,8 +50,10 @@ class GameOfLife extends FlameGame
   }
 
   set boardSize(int boardSize) {
-    _boardSize = boardSize;
-    _resetBoard();
+    if (boardSize != _boardSize) {
+      _boardSize = boardSize;
+      _resetBoard();
+    }
   }
 
   void _resetBoard() {
@@ -242,7 +244,9 @@ class HexInteriorComponent extends PolygonComponent with Tappable {
     final hexSet = gameOfLife?._hexMap[hex] ?? false;
     paint.color = hexSet
         ? _borderColor
-        : ((hex.q == 0 && hex.r == 0) ? const Color.fromARGB(128, 196, 122, 43) : _backgroundColor);
+        : ((hex.q == 0 && hex.r == 0)
+            ? const Color.fromARGB(128, 196, 122, 43)
+            : _backgroundColor);
     super.update(dt);
   }
 
