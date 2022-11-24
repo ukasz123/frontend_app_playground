@@ -52584,9 +52584,8 @@ $S:0}
 A.a_U.prototype={
 $1(a){var s=B.d.cE(a),r=this.a,q=r.c,p=q.e
 p===$&&A.e()
-p.p3=s
-p.ra()
-q.aa(new A.a_N(r,s))},
+if(s!==p.p3){p.p3=s
+p.ra()}q.aa(new A.a_N(r,s))},
 $S:28}
 A.a_N.prototype={
 $0(){this.a.c.d=this.b},
