@@ -1,0 +1,2 @@
+[workspace]
+members = ["labyrinth_model", "labyrinth_renderer", "labyrinth_cli", "labyrinth_leptos"]

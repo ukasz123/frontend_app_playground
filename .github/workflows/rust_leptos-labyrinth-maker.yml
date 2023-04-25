@@ -1,0 +1,45 @@
+name: Labyrinth maker
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/rust_leptos-labyrinth-maker.yml'
+      - 'labyrinth-maker/**'
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: ./labyrinth-maker/labyrinth_leptos
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install WebAssembly toolchain
+        run: rustup target add wasm32-unknown-unknown
+      
+      - name: Install Trunk
+        run: |
+          cargo install --locked trunk
+          cargo install wasm-bindgen-cli
+        
+      - name: Build app
+        run: trunk build --release --public-url /frontend_app_playground/website/labyrinth-maker/
+              
+      - name: Deploy website 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./labyrinth-maker/dist # The folder the action should deploy.
+          force: false
+          target-folder: website/labyrinth-maker/
+          
