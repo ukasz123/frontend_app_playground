@@ -1,4 +1,4 @@
-use std::{ops::Deref};
+use std::ops::Deref;
 
 use leptos::*;
 
@@ -64,8 +64,9 @@ fn LabyrinthSvgView(cx: Scope, width: ReadSignal<u16>, height: ReadSignal<u16>) 
         log!("Generating labyrinth of size: ({}, {}).", s.0, s.1);
         create_labirynth(s).await
     });
+
     view! {
-       cx, <div>{move || match async_labyrinth.with(cx, |labyrinth| {
+       cx, <div id="labyrinth-preview">{move || match async_labyrinth.with(cx, |labyrinth| {
         let svg_tree = render_to_svg_tree(&labyrinth);
         render_to_svg_view(cx, &svg_tree)
        }){
