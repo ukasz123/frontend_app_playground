@@ -11,6 +11,8 @@ labyrinth_model = { path = "../labyrinth_model", features = ["serde"] }
 labyrinth_renderer = { path = "../labyrinth_renderer" }
 usvg = "0.31.0"
 getrandom = { version = "*", features = ["js"] }
+styled = "0.1.36"
+stylist = "0.12.0"
 
 [package.metadata.leptos]
 style-file = "./index.css"

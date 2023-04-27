@@ -81,12 +81,26 @@ async fn create_labirynth(size: (u16, u16)) -> Labyrinth {
 }
 
 fn render_to_svg_view(cx: Scope, lab: &Tree) -> impl IntoView {
-    view! {cx, <svg width={lab.size.width()} height={lab.size.height()} viewBox={format!("0 0 {} {}", lab.view_box.rect.width(), lab.view_box.rect.height())}>
-    {
-        let node = &lab.root;
-        render_node_to_svg_view(cx, node)
+    use styled::style;
+    let aspect_ratio = lab.size.width() / lab.size.height();
+
+    let div_style = style!(
+        div {
+            width: 100%;
+            aspect-ratio: ${aspect_ratio};
+        }
+    );
+
+    styled::view! {cx, div_style,
+        <div>
+            <svg viewBox={format!("0 0 {} {}", lab.view_box.rect.width(), lab.view_box.rect.height())}>
+            {
+                let node = &lab.root;
+                render_node_to_svg_view(cx, node)
+            }
+            </svg>
+        </div>
     }
-    </svg>}
 }
 
 fn render_node_to_svg_view(cx: Scope, node: &Node) -> impl IntoView {
