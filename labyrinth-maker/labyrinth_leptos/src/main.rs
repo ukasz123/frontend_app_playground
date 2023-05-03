@@ -60,7 +60,7 @@ fn App(cx: Scope) -> impl IntoView {
 fn LabyrinthSvgView(cx: Scope, width: ReadSignal<u16>, height: ReadSignal<u16>) -> impl IntoView {
     let size = move || (width.get(), height.get());
 
-    let async_labyrinth = create_resource(cx, size, |s| async move {
+    let async_labyrinth = create_local_resource(cx, size, |s| async move {
         log!("Generating labyrinth of size: ({}, {}).", s.0, s.1);
         create_labirynth(s).await
     });
