@@ -60,7 +60,7 @@ fn App(cx: Scope) -> impl IntoView {
 fn LabyrinthSvgView(cx: Scope, width: ReadSignal<u16>, height: ReadSignal<u16>) -> impl IntoView {
     let size = move || (width.get(), height.get());
 
-    let async_labyrinth = create_resource(cx, size, |s| async move {
+    let async_labyrinth = create_local_resource(cx, size, |s| async move {
         log!("Generating labyrinth of size: ({}, {}).", s.0, s.1);
         create_labirynth(s).await
     });
@@ -81,12 +81,26 @@ async fn create_labirynth(size: (u16, u16)) -> Labyrinth {
 }
 
 fn render_to_svg_view(cx: Scope, lab: &Tree) -> impl IntoView {
-    view! {cx, <svg width={lab.size.width()} height={lab.size.height()} viewBox={format!("0 0 {} {}", lab.view_box.rect.width(), lab.view_box.rect.height())}>
-    {
-        let node = &lab.root;
-        render_node_to_svg_view(cx, node)
+    use styled::style;
+    let aspect_ratio = lab.size.width() / lab.size.height();
+
+    let div_style = style!(
+        div {
+            width: 100%;
+            aspect-ratio: ${aspect_ratio};
+        }
+    );
+
+    styled::view! {cx, div_style,
+        <div>
+            <svg viewBox={format!("0 0 {} {}", lab.view_box.rect.width(), lab.view_box.rect.height())}>
+            {
+                let node = &lab.root;
+                render_node_to_svg_view(cx, node)
+            }
+            </svg>
+        </div>
     }
-    </svg>}
 }
 
 fn render_node_to_svg_view(cx: Scope, node: &Node) -> impl IntoView {

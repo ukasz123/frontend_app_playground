@@ -1,2 +1,5 @@
 [workspace]
 members = ["labyrinth_model", "labyrinth_renderer", "labyrinth_cli", "labyrinth_leptos"]
+
+[workspace.dependencies]
+usvg = "0.32.0"

@@ -915,6 +915,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a5bbe824c507c5da5956355e86a746d82e0e1464f65d862cc5e71da70e94b2c"
 dependencies = [
  "cfg-if",
+ "js-sys",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
@@ -1023,6 +1026,8 @@ dependencies = [
  "labyrinth_model",
  "labyrinth_renderer",
  "leptos",
+ "styled",
+ "stylist",
  "usvg",
 ]
 
@@ -1149,6 +1154,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "leptos_meta"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "950533f057299e75f48471211dc9b46e0d00c640fd14bda92c34e2705add7b8d"
+dependencies = [
+ "cfg-if",
+ "leptos",
+ "tracing",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "leptos_reactive"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1201,6 +1219,15 @@ name = "linux-raw-sys"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d59d8c75012853d2e872fb56bc8a2e53718e2cafe1a4c823143141c6d90c322f"
+
+[[package]]
+name = "litrs"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b487d13a3f4b465df87895a37b24e364907019afa12d943528df5b7abe0836f1"
+dependencies = [
+ "proc-macro2",
+]
 
 [[package]]
 name = "lock_api"
@@ -1734,9 +1761,9 @@ dependencies = [
 
 [[package]]
 name = "rosvgtree"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8cdb7996003c5cc8a8c2585b4ab6b422da64ad86a9c99cfa7ba320e15e8739f3"
+checksum = "ad747e7384940e7bf33b15ba433b7bad9f44c0c6d5287a67c2cb22cd1743d497"
 dependencies = [
  "log",
  "roxmltree",
@@ -2047,6 +2074,64 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
+name = "styled"
+version = "0.1.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "406ca36e9e3eca25f6932ee2c5bee33a42ddf52ec5a37d37274ffff09aa89683"
+dependencies = [
+ "leptos",
+ "leptos_meta",
+ "regex",
+ "stylist",
+]
+
+[[package]]
+name = "stylist"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a8dccf52b4a6dda7a7e229b712b5a31f3270e77365e2655cfeb13fd713535bf"
+dependencies = [
+ "fastrand",
+ "instant",
+ "once_cell",
+ "serde",
+ "stylist-core",
+ "stylist-macros",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "stylist-core"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f115d7e07846b817a0527d4ca7b9bca3342c2387fcda17330702f839c69380a1"
+dependencies = [
+ "nom",
+ "once_cell",
+ "serde",
+ "thiserror",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "stylist-macros"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7ba494c8364859e8cddf7b18598ab556803dbef994c13efaf9888a65ca0bb775"
+dependencies = [
+ "itertools",
+ "litrs",
+ "log",
+ "nom",
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "stylist-core",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "svgtypes"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2335,9 +2420,9 @@ dependencies = [
 
 [[package]]
 name = "usvg"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67a6cab2bc32b5a4310a06c7d3c6b51b5c7897b1f7c7d2bf73bf052f5754950f"
+checksum = "4b44e14b7678bcc5947b397991432d0c4e02a103958a0ed5e1b9b961ddd08b21"
 dependencies = [
  "base64 0.21.0",
  "log",
@@ -2350,9 +2435,9 @@ dependencies = [
 
 [[package]]
 name = "usvg-parser"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2352a2c05655a7e4d3dca76cf65764efce35527472668bae5c6fc876b4c996d"
+checksum = "90c8251d965c2882a636ffcc054340b1f13a6bce68779cb5b2084d8ffc2535be"
 dependencies = [
  "data-url",
  "flate2",
@@ -2367,9 +2452,9 @@ dependencies = [
 
 [[package]]
 name = "usvg-text-layout"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "392baafaaa861ff8c9863546f92a60c51380fc49aa185a6840fb2af564c73530"
+checksum = "6c4fed019d1af07bfe0f3bac13d120d7b51bc65b38cb24809cf4ed0b8b631138"
 dependencies = [
  "fontdb",
  "kurbo",
@@ -2383,9 +2468,9 @@ dependencies = [
 
 [[package]]
 name = "usvg-tree"
-version = "0.31.0"
+version = "0.32.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9cb92fe40e0ffb45fd01349187e276a695f6c676a016d72ba09510009594829"
+checksum = "7371265c467cdae0ccc3655e2e3f310c695fb9f717c0d25187bf3b333f7b5159"
 dependencies = [
  "kurbo",
  "rctree",
