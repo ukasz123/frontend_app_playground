@@ -1,4 +1,4 @@
-name = "labyrinth-maker-worker" # todo
+name = "labyrinth-maker-worker"
 main = "build/worker/shim.mjs"
 compatibility_date = "2022-01-20"
 
