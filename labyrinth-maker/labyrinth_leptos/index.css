@@ -9,3 +9,9 @@
       top: 0;
     }
   }
+  #labyrinth-preview > * {
+    width: 100%;
+  }
+  #labyrinth-preview img {
+    width: 100%;
+  }

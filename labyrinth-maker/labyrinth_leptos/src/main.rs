@@ -17,6 +17,8 @@ fn App(cx: Scope) -> impl IntoView {
     let (height, set_height) = create_signal::<u16>(cx, 10);
     let height_str = move || height.get().to_string();
 
+    let (local_renderer, set_local_renderer) = create_signal::<bool>(cx, false);
+
     view! {cx,
     <h1>"Labyrinth generator"</h1>
     <form>
@@ -46,13 +48,45 @@ fn App(cx: Scope) -> impl IntoView {
             }
             prop:value=height_str/>
         </div>
+        <div>
+            <label>"Local generator: "</label>
+            <input type="checkbox" on:change=move |ev| {
+                let txt = event_target_checked(&ev);
+                set_local_renderer.set(txt);
+            }/>
+        </div>
     </form>
     <hr/>
 
     <div>
         "Labyrinth "{width} "/" {height} ":"
-        <LabyrinthSvgView width=width height=height/>
+        <Show
+            when=move || local_renderer.get()
+            fallback=move |cx| view!{cx, <LabyrinthSvgImgView  width=width height=height/> }
+        >
+            <LabyrinthSvgView width=width height=height/>
+        </Show>
     </div>
+    }
+}
+
+#[component]
+fn LabyrinthSvgImgView(
+    cx: Scope,
+    width: ReadSignal<u16>,
+    height: ReadSignal<u16>,
+) -> impl IntoView {
+    let svg_src = move || {
+        format!(
+            "https://labyrinth-maker-worker.ukasz-apps.workers.dev?width={}&height={}",
+            width.get(),
+            height.get()
+        )
+    };
+    view! {cx,
+        <div id="labyrinth-preview">
+            <div><img prop:src={svg_src}/></div>
+        </div>
     }
 }
 
@@ -81,17 +115,7 @@ async fn create_labirynth(size: (u16, u16)) -> Labyrinth {
 }
 
 fn render_to_svg_view(cx: Scope, lab: &Tree) -> impl IntoView {
-    use styled::style;
-    let aspect_ratio = lab.size.width() / lab.size.height();
-
-    let div_style = style!(
-        div {
-            width: 100%;
-            aspect-ratio: ${aspect_ratio};
-        }
-    );
-
-    styled::view! {cx, div_style,
+    view! { cx,
         <div>
             <svg viewBox={format!("0 0 {} {}", lab.view_box.rect.width(), lab.view_box.rect.height())}>
             {
