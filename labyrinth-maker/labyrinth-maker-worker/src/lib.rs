@@ -91,6 +91,9 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
             headers.set("Content-Type", "image/svg+xml")?;
             Ok(response)
         })
+        .get("/info", |_,_|{
+            Response::ok("Generates labirynth of given width and height in squares.\n\nUsage: [host]/?width={width}[&height={height}]")
+        })
         .run(req, env)
         .await
 }
