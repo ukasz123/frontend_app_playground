@@ -2,10 +2,10 @@ name: Labyrinth maker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
-      - '.github/workflows/rust_leptos-labyrinth-maker.yml'
-      - 'labyrinth-maker/**'
+      - ".github/workflows/rust_leptos-labyrinth-maker.yml"
+      - "labyrinth-maker/**"
 
 permissions:
   contents: write
@@ -27,15 +27,15 @@ jobs:
 
       - name: Install WebAssembly toolchain
         run: rustup target add wasm32-unknown-unknown
-      
+
       - name: Install Trunk
         run: |
           cargo install --locked trunk
           cargo install wasm-bindgen-cli
-        
+
       - name: Build app
         run: trunk build --release --public-url /frontend_app_playground/website/labyrinth-maker/
-              
+
       - name: Deploy website 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
@@ -44,6 +44,12 @@ jobs:
           target-folder: website/labyrinth-maker/
   build-and-deploy-worker:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./labyrinth-maker/labyrinth-maker-worker
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+
     name: Deploy worker generator to Cloudflare Edge
 
     steps:
@@ -54,10 +60,15 @@ jobs:
           target: wasm32-unknown-unknown
           override: true
 
-      - name: Deploy
-        uses: cloudflare/wrangler-action@2.0.0
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          apiToken: ${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }}
-          workingDirectory: ./labyrinth-maker/labyrinth-maker-worker
+          node-version: v18.12.1
 
-          
+      - name: Install wrangler
+        run: |
+          sudo npm install wrangler --save-dev
+
+      - name: Publish to Edge
+        run: |
+          CLOUDFLARE_API_TOKEN={{ secrets.CF_UKASZAPPS_WORKER_API_KEY }} npx wrangler publish
