@@ -51,9 +51,13 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
 
-      - name: Install WebAssembly toolchain
-        run: rustup target add wasm32-unknown-unknown
+      - name: Check for errors
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
 
       - name: Deploy
         uses: cloudflare/wrangler-action@2.0.0
