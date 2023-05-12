@@ -65,10 +65,7 @@ jobs:
         with:
           node-version: v18.12.1
 
-      - name: Install wrangler
-        run: |
-          sudo npm install wrangler --save-dev
-
       - name: Publish to Edge
         run: |
+          sudo npm install wrangler --save-dev
           CLOUDFLARE_API_TOKEN=${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }} npx wrangler publish
