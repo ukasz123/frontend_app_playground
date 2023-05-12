@@ -15,7 +15,7 @@ defaults:
     working-directory: ./labyrinth-maker/labyrinth_leptos
 
 jobs:
-  build:
+  build-and-deploy-website:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,4 +42,16 @@ jobs:
           folder: ./labyrinth-maker/labyrinth_leptos/dist # The folder the action should deploy.
           force: false
           target-folder: website/labyrinth-maker/
+  build-and-deploy-worker:
+    runs-on: ubuntu-latest
+    name: Deploy worker generator to Cloudflare Edge
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }}
+          workingDirectory: ./labyrinth-maker/labyrinth-maker-worker
+
           
