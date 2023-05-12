@@ -48,6 +48,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
+
+      - name: Check for errors
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
       - name: Deploy
         uses: cloudflare/wrangler-action@2.0.0
         with:
