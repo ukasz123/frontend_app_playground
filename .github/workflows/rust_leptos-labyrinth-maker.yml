@@ -48,6 +48,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Install WebAssembly toolchain
+        run: rustup target add wasm32-unknown-unknown
+
       - name: Deploy
         uses: cloudflare/wrangler-action@2.0.0
         with:
