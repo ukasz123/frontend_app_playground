@@ -58,6 +58,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: check
+          workingDirectory: ./labyrinth-maker/labyrinth-maker-worker
 
       - name: Deploy
         uses: cloudflare/wrangler-action@2.0.0
