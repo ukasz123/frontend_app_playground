@@ -46,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./labyrinth-maker/labyrinth-maker-worker
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }}
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
@@ -74,4 +75,4 @@ jobs:
           cargo install -q worker-build --version 0.0.9
           worker-build --release
           cp wrangler.toml-ga wrangler.toml
-          CLOUDFLARE_API_TOKEN=${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }} sudo npx wrangler publish --no-bundle=true
+          sudo npx wrangler publish
