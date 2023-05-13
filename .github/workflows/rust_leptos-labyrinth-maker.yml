@@ -71,4 +71,6 @@ jobs:
       - name: Publish to Edge
         run: |
           sudo npm install wrangler --save-dev
-          CLOUDFLARE_API_TOKEN=${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }} sudo npx wrangler publish
+          cargo install -q worker-build --version 0.0.9
+          worker-build --release
+          CLOUDFLARE_API_TOKEN=${{ secrets.CF_UKASZAPPS_WORKER_API_KEY }} sudo npx wrangler publish --no-bundle=true
