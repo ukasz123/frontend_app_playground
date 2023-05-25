@@ -33,6 +33,8 @@ fn App(cx: Scope) -> impl IntoView {
     let (a4_format_scale, set_a4_format_scale) = create_signal::<bool>(cx, true);
     let height_field_disabled = move || a4_format_scale.get();
 
+    let (labyrinth_id, set_labyrinth_id) = create_signal::<u16>(cx, 0);
+
     view! {cx,
     <h1>"Labyrinth generator"</h1>
     <form>
@@ -92,15 +94,20 @@ fn App(cx: Scope) -> impl IntoView {
             }/>
         </div>
     </form>
+    <button on:click=move |_| {
+        set_labyrinth_id.update(|v| *v = *v + (1 as u16));
+    }> "New"</button>
     <hr/>
 
     <div>
         "Labyrinth "{width} "/" {height} ":"
         <Show
-            when=move || local_renderer.get()
-            fallback=move |cx| view!{cx, <LabyrinthSvgImgView  width=width height=height/> }
+            when=move || {
+                local_renderer.get()
+            }
+            fallback=move |cx| view!{cx, <LabyrinthSvgImgView  width=width height=height id = labyrinth_id /> }
         >
-            <LabyrinthSvgView width=width height=height/>
+            <LabyrinthSvgView width=width height=height id=labyrinth_id/>
         </Show>
     </div>
     }
@@ -111,8 +118,10 @@ fn LabyrinthSvgImgView(
     cx: Scope,
     width: ReadSignal<u16>,
     height: ReadSignal<u16>,
+    id: ReadSignal<u16>,
 ) -> impl IntoView {
     let svg_src = move || {
+        let _ = id.get();
         format!(
             "https://labyrinth-maker-worker.ukasz-apps.workers.dev?width={}&height={}",
             width.get(),
@@ -127,12 +136,20 @@ fn LabyrinthSvgImgView(
 }
 
 #[component]
-fn LabyrinthSvgView(cx: Scope, width: ReadSignal<u16>, height: ReadSignal<u16>) -> impl IntoView {
-    let size = move || (width.get(), height.get());
+fn LabyrinthSvgView(
+    cx: Scope,
+    width: ReadSignal<u16>,
+    height: ReadSignal<u16>,
+    id: ReadSignal<u16>,
+) -> impl IntoView {
+    let size = move || {
+        let i = id.get();
+        ((width.get(), height.get()), i)
+    };
 
     let async_labyrinth = create_local_resource(cx, size, |s| async move {
-        log!("Generating labyrinth of size: ({}, {}).", s.0, s.1);
-        create_labirynth(s).await
+        log!("Generating labyrinth of size: ({}, {}).", s.0.0, s.0.1);
+        create_labirynth(s.0).await
     });
 
     view! {
